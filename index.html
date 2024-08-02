@@ -1,15 +1,15 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="icon" href="data:">
-<title>アプリで職業性ストレス簡易調査票 57項目</title>
+<title>アプリで調査票</title>
 </head><body>
 <header>
-<h1 id=h1title>アプリで職業性ストレス<br>簡易調査票 57項目</h1>
-<div>アプリで手早くストレスチェック！</div>
+<h1 id=h1title>アプリで調査票</h1>
+<div>アプリで手早くチェック！</div>
 </header>
 <main id=main></main>
 <hr>
 <footer>
-App: アプリでサクサクアンケート<br>
-<a href=https://github.com/code4fukui/stress-check/>src on GitHub</a><br>
+App: アプリでサクサクアンケート「<a href=https://github.com/code4fukui/qr-survey/>qr-survey</a>」<br>
+<a href=https://github.com/code4fukui/qr-survey/>src on GitHub</a><br>
 </footer>
 
 <script type="module">
@@ -18,10 +18,11 @@ import { cr } from "https://js.sabae.cc/cr.js";
 import { QRCode } from "https://code4fukui.github.io/qr-code/qr-code.js";
 import { removeHash } from "https://js.sabae.cc/removeHash.js";
 
-const default_csvname = "stress-check";
+const index = await CSV.fetchJSON("./index.csv");
+
+const default_csvname = index[0].name;
 const csvname = new URL(location.href).searchParams.get("name") || default_csvname;
 
-const index = await CSV.fetchJSON("./index.csv");
 const header = index.find(i => i.name == csvname);
 document.title = h1title.textContent = header.apptitle;
 

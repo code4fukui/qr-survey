@@ -1,6 +1,9 @@
-# stress-check
+# qr-survey
 
-- [アプリで職業性ストレス簡易調査票 57項目](https://code4fukui.github.io/stress-check/)
+## apps
+
+- [アプリで査票 テスト3項目](https://code4fukui.github.io/qr-survey/)
+- [アプリで職業性ストレス簡易調査票 57項目](https://code4fukui.github.io/qr-survey/?name=stress-check)
 - [はたらく主観的価値についての調査 3項目](https://code4fukui.github.io/stress-check/?name=workwellb-check)
 
 ## reference
