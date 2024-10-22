@@ -3,9 +3,14 @@
 </head><body>
 <header>
 <h1 id=h1title>アプリで調査票</h1>
-<div>アプリで手早くチェック！</div>
+<div id=divdescription>アプリで手早くチェック！</div>
 </header>
 <main id=main></main>
+<div id=divform>
+名前 <input type=text id=name><br>
+年齢 <input type=number id=name><br>
+<button>送信</button>
+</div>
 <hr>
 <footer>
 App: アプリでサクサクアンケート「<a href=https://github.com/code4fukui/qr-survey/>qr-survey</a>」<br>
@@ -25,6 +30,8 @@ const csvname = new URL(location.href).searchParams.get("name") || default_csvna
 
 const header = index.find(i => i.name == csvname);
 document.title = h1title.textContent = header.apptitle;
+divdescription.textContent = header.appdescription;
+divform.style.display = header.isform == "true" ? "block" : "none";
 
 const data = await CSV.fetchJSON(header.csv);
 //console.log(data);
@@ -165,10 +172,10 @@ const clearHash = () => {
   scrollTo(0, 0);
 };
 
-const nanswer = Object.keys(data[0]).filter(i => i.startsWith("answer")).length;
 
 let idx = 1;
 for (const item of data) {
+  const nanswer = Object.keys(item).filter(i => i.startsWith("answer") && item[i]).length;
   const div = cr("div", main, "divq");
   cr("div", div, "idx").textContent = idx++ + " / " + data.length;
   if (item.category1) cr("div", div, "q1").textContent = item.category1;
@@ -294,6 +301,15 @@ footer {
 }
 a {
   color: gray !important;
+}
+#divform {
+  border: 2px solid gray;
+  padding: 1em;
+  margin: 1em;
+  font-size: 150%;
+}
+input {
+  font-size: 18px;
 }
 </style>
 </body></html>
