@@ -7,9 +7,9 @@
 </header>
 <main id=main></main>
 <div id=divform>
-名前 <input type=text id=name><br>
-年齢 <input type=number id=name><br>
-<button>送信</button>
+名前 <input type=text id=inpname><br>
+年齢 <input type=number id=inpage><br>
+<button id=btnsend>調査票データを送信する</button>
 </div>
 <hr>
 <footer>
@@ -22,16 +22,24 @@ import { CSV } from "https://js.sabae.cc/CSV.js";
 import { cr } from "https://js.sabae.cc/cr.js";
 import { QRCode } from "https://code4fukui.github.io/qr-code/qr-code.js";
 import { removeHash } from "https://js.sabae.cc/removeHash.js";
+import { fetchJSON } from "https://js.sabae.cc/fetchJSON.js";
 
+const params = new URL(location.href).searchParams;
+
+const default_indexname = "./index.csv";
+const indexname = params.get("index") || default_indexname;
 const index = await CSV.fetchJSON("./index.csv");
 
 const default_csvname = index[0].name;
-const csvname = new URL(location.href).searchParams.get("name") || default_csvname;
+const csvname = params.get("name") || default_csvname;
 
 const header = index.find(i => i.name == csvname);
 document.title = h1title.textContent = header.apptitle;
 divdescription.textContent = header.appdescription;
-divform.style.display = header.isform == "true" ? "block" : "none";
+divform.style.display = header.formurl != "" ? "block" : "none";
+
+inpname.value = localStorage.getItem("qr-survey_name");
+inpage.value = localStorage.getItem("qr-survey_age");
 
 const data = await CSV.fetchJSON(header.csv);
 //console.log(data);
@@ -131,7 +139,7 @@ const setQR = (nn) => {
   return true;
 };
 
-const setHash = () => {
+const getAnswers = () => {
   const divs = main.children;
   const ns = [];
   for (let i = 0; i < data.length; i++) {
@@ -142,6 +150,10 @@ const setHash = () => {
     ns.push(n);
   }
   const nn = ns.join("");
+  return nn;
+};
+const setHash = () => {
+  const nn = getAnswers();
   location.hash = nn;
   return setQR(nn);
 };
@@ -186,7 +198,6 @@ for (const item of data) {
   qs.q = [];
   for (let i = 1; i <= nanswer; i++) {
     const q = cr("span", qs);
-    console.log("1fr ".repeat(nanswer).trim())
     q.textContent = item["answer" + i];
     qs.q.push(q);
     q.onclick = () => {
@@ -216,6 +227,47 @@ getHash();
 if (!jumpToNotAnswer()) scrollIntoView(divqr);
 
 onhashchange = getHash;
+
+btnsend.onclick = async () => {
+  const nn = getAnswers();
+  if (nn.indexOf("0") >= 0) {
+    alert("未回答の設問にお答えください");
+    return;
+  }
+  const name = inpname.value;
+  if (name == "") {
+    alert("名前をご記入ください");
+    return;
+  }
+  localStorage.setItem("qr-survey_name", name);
+
+  const age = inpage.value;
+  if (age == "") {
+    alert("年齢をご記入ください");
+  }
+  localStorage.setItem("qr-survey_age", age);
+
+  const org = params.get("org") || "";
+
+  const url = header.formurl;
+  const param = {
+    org,
+    name,
+    age,
+    answers: nn,
+  };
+  try {
+    console.log(param);
+    const res = await fetchJSON(url, param);
+    if (res != "ok") {
+      alert("送信に失敗しました。管理者へお問い合わせください");
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+    alert("送信に失敗しました。ネットワークのアクセス環境を確認しもう一度お試しください");
+  }
+};
 </script>
 
 <style>
@@ -308,8 +360,13 @@ a {
   margin: 1em;
   font-size: 150%;
 }
-input {
+#divform input {
   font-size: 18px;
+}
+#divform button {
+  font-size: 18px;
+  margin: .5em 0;
+  padding: .2em 1em;
 }
 </style>
 </body></html>
