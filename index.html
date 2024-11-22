@@ -31,7 +31,7 @@ const params = new URL(location.href).searchParams;
 
 const default_indexname = "./index.csv";
 const indexname = params.get("index") || default_indexname;
-const index = await CSV.fetchJSON("./index.csv");
+const index = await CSV.fetchJSON(indexname);
 
 const default_csvname = index[0].name;
 const csvname = params.get("name") || default_csvname;
