@@ -7,8 +7,11 @@
 </header>
 <main id=main></main>
 <div id=divform>
-名前 <input type=text id=inpname><br>
-年齢 <input type=number id=inpage><br>
+<div class=clsform>
+<span id=spandep></span><input type=text id=inpdep>
+<span>名前</span><input type=text id=inpname>
+<span>年齢</span><input type=number id=inpage>
+</div><br>
 <button id=btnsend>調査票データを送信する</button>
 </div>
 <hr>
@@ -32,6 +35,14 @@ const index = await CSV.fetchJSON("./index.csv");
 
 const default_csvname = index[0].name;
 const csvname = params.get("name") || default_csvname;
+
+const depname = params.get("dep");
+if (depname) {
+  spandep.textContent = depname;
+} else {
+  spandep.style.display = "none";
+  inpdep.style.display = "none";
+}
 
 const header = index.find(i => i.name == csvname);
 document.title = h1title.textContent = header.apptitle;
@@ -367,6 +378,11 @@ a {
   font-size: 18px;
   margin: .5em 0;
   padding: .2em 1em;
+}
+.clsform {
+  display: inline-grid;
+  grid-template-columns: 1fr 2fr;
+  gap: .2em 1em;
 }
 </style>
 </body></html>
