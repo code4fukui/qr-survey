@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="icon" href="data:">
 <title>アプリで調査票</title>
 </head><body>
-<header>
+<header id=headerc>
 <h1 id=h1title>アプリで調査票</h1>
 <div id=divdescription>アプリで手早くチェック！</div>
 </header>
@@ -62,7 +62,10 @@ divform.style.display = formurl != "" ? "block" : "none";
 inpname.value = localStorage.getItem("qr-survey_name");
 inpage.value = localStorage.getItem("qr-survey_age");
 
-
+const bgcolor = header.bgcolor;
+if (bgcolor) {
+  headerc.style.backgroundColor = bgcolor;
+}
 
 const data = await CSV.fetchJSON(header.csv);
 //console.log(data);

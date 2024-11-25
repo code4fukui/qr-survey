@@ -1,4 +1,4 @@
-name,csv,title,apptitle,appdescription,formurl
-test-check,surveys/test-check.csv,テスト調査票,アプリでテスト調査票 3項目,アプリで手早くチェック！,
-stress-check,surveys/stress-check.csv,職業性ストレス簡易調査票,アプリで職業性ストレス簡易調査票 57項目,アプリで手早くチェック！,
-workwellb-check,surveys/workwellb-check.csv,はたらく主観的価値についての調査,はたらく主観的価値についての調査 3項目,アプリで手早くチェック！,
+name,csv,title,apptitle,appdescription,formurl,bgcolor
+test-check,surveys/test-check.csv,テスト調査票,アプリでテスト調査票 3項目,アプリで手早くチェック！,,#f00
+stress-check,surveys/stress-check.csv,職業性ストレス簡易調査票,アプリで職業性ストレス簡易調査票 57項目,アプリで手早くチェック！,,
+workwellb-check,surveys/workwellb-check.csv,はたらく主観的価値についての調査,はたらく主観的価値についての調査 3項目,アプリで手早くチェック！,,
