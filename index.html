@@ -8,12 +8,16 @@
 <main id=main></main>
 <div id=divform>
 <div class=clsform>
+<span>組織</span><input type=text id=inporg readonly disabled>
 <span id=spandep></span><input type=text id=inpdep>
 <span>名前</span><input type=text id=inpname>
 <span>年齢</span><input type=number id=inpage>
 </div><br>
 <button id=btnsend>調査票データを送信する</button>
 </div>
+<div id=divqrc></div>
+<br>
+<div id=divclearc></div>
 <hr>
 <footer>
 App: アプリでサクサクアンケート「<a href=https://github.com/code4fukui/qr-survey/>qr-survey</a>」<br>
@@ -47,10 +51,18 @@ if (depname) {
 const header = index.find(i => i.name == csvname);
 document.title = h1title.textContent = header.apptitle;
 divdescription.textContent = header.appdescription;
-divform.style.display = header.formurl != "" ? "block" : "none";
+
+const formurl0 = params.get("formurl") || header.formurl || "";
+const formurl = formurl0 ? formurl0 + (formurl0.endsWith("/") ? "" : "/") + new Date().getTime() : formurl0;
+
+inporg.value = params.get("org") || "";
+
+divform.style.display = formurl != "" ? "block" : "none";
 
 inpname.value = localStorage.getItem("qr-survey_name");
 inpage.value = localStorage.getItem("qr-survey_age");
+
+
 
 const data = await CSV.fetchJSON(header.csv);
 //console.log(data);
@@ -224,9 +236,9 @@ for (const item of data) {
     };
   }
 }
-main.appendChild(divqr);
+divqrc.appendChild(divqr);
 
-const divclear = cr("div", main, "divclear");
+const divclear = cr("div", divclearc, "divclear");
 const btnclear = cr("button", divclear, "btnclear");
 btnclear.textContent = "すべての回答をリセットする";
 btnclear.onclick = () => {
@@ -260,7 +272,7 @@ btnsend.onclick = async () => {
 
   const org = params.get("org") || "";
 
-  const url = header.formurl;
+  const url = formurl;
   const param = {
     org,
     name,
@@ -270,10 +282,15 @@ btnsend.onclick = async () => {
   try {
     console.log(param);
     const res = await fetchJSON(url, param);
+    console.log(res);
+    /*
     if (res != "ok") {
       alert("送信に失敗しました。管理者へお問い合わせください");
       return;
     }
+    */
+    alert("調査票データを送信しました。ありがとうございました！")
+    return;
   } catch (e) {
     console.log(e);
     alert("送信に失敗しました。ネットワークのアクセス環境を確認しもう一度お試しください");
@@ -383,6 +400,9 @@ a {
   display: inline-grid;
   grid-template-columns: 1fr 2fr;
   gap: .2em 1em;
+}
+#divqrc {
+  text-align: center;
 }
 </style>
 </body></html>
