@@ -30,6 +30,7 @@ import { cr } from "https://js.sabae.cc/cr.js";
 import { QRCode } from "https://code4fukui.github.io/qr-code/qr-code.js";
 import { removeHash } from "https://js.sabae.cc/removeHash.js";
 import { fetchJSON } from "https://js.sabae.cc/fetchJSON.js";
+import { DateTime } from "https://js.sabae.cc/DateTime.js";
 
 const params = new URL(location.href).searchParams;
 
@@ -281,6 +282,7 @@ btnsend.onclick = async () => {
     name,
     age,
     answers: nn,
+    dt: new DateTime().toString(),
   };
   try {
     console.log(param);
