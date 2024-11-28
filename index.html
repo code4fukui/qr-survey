@@ -268,9 +268,16 @@ btnsend.onclick = async () => {
   }
   localStorage.setItem("qr-survey_name", name);
 
+  const dep = inpdep.value;
+  if (dep == "" && depname) {
+    alert(depname + "をご記入ください");
+    return;
+  }
+
   const age = inpage.value;
   if (age == "") {
     alert("年齢をご記入ください");
+    return;
   }
   localStorage.setItem("qr-survey_age", age);
 
@@ -279,6 +286,7 @@ btnsend.onclick = async () => {
   const url = formurl;
   const param = {
     org,
+    dep,
     name,
     age,
     answers: nn,
