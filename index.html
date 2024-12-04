@@ -302,7 +302,8 @@ btnsend.onclick = async () => {
       return;
     }
     */
-    alert("調査票データを送信しました。ありがとうございました！")
+    //alert("調査票データを送信しました。ありがとうございました！")
+    location.href = "thanks.html?apptitle=" + encodeURIComponent(header.apptitle) + "&bgcolor=" + encodeURIComponent(header.bgcolor);
     return;
   } catch (e) {
     console.log(e);

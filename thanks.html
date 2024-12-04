@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="icon" href="data:">
+<title>アプリで調査票</title>
+</head><body>
+<header id=headerc>
+<h1 id=h1title>アプリで調査票</h1>
+</header>
+<main id=main>調査票データを送信しました。ありがとうございました！<br>
+<br>
+<button id=btnback>調査票に戻る</button>
+</main>
+<hr>
+<footer>
+App: アプリでサクサクアンケート「<a href=https://github.com/code4fukui/qr-survey/>qr-survey</a>」<br>
+<a href=https://github.com/code4fukui/qr-survey/>src on GitHub</a><br>
+</footer>
+
+<script type="module">
+const params = new URL(location.href).searchParams;
+
+document.title = h1title.textContent = params.get("apptitle");
+const bgcolor = params.get("bgcolor");
+if (bgcolor) {
+  headerc.style.backgroundColor = bgcolor;
+}
+
+btnback.onclick = () => history.back();
+</script>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+h1 {
+  margin: 0;
+  padding: 1em;
+}
+header {
+  text-align: center;
+  background-color: gray;
+  color: white;
+}
+header > div {
+  font-size: 130%;
+  padding-bottom: 1em;
+}
+footer {
+  text-align: center;
+  margin: 1em;
+}
+a {
+  color: gray !important;
+}
+main {
+  text-align: center;
+  font-size: 120%;
+  padding: 2em 0;
+}
+</style>
+</body></html>
